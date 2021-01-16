@@ -1,5 +1,7 @@
 package pgdp.tree;
 
+import java.util.List;
+
 /**
  * You can modify the code in here, this will not be tested.
  */
@@ -10,33 +12,33 @@ public class FileExample {
 	 * handling invalid input as well as real files are topic of future lectures.
 	 * TODO: Comment out the below to try the implementation of Segmentable
 	 */
-//	public static class TextFile implements Segmentable<String> {
-//
-//		private final List<String> path;
-//		private final String content;
-//
-//		public TextFile(List<String> path, String content) {
-//			this.path = path;
-//			this.content = content;
-//		}
-//
-//		public String getContent() {
-//			return content;
-//		}
-//
-//		public String getFileName() {
-//			return path.get(path.size() - 1);
-//		}
-//
-//		public int getSize() {
-//			return content.length();
-//		}
-//
-//		@Override
-//		public List<String> getSegments() {
-//			return path;
-//		}
-//	}
+	public static class TextFile implements Segmentable<String> {
+
+		private final List<String> path;
+		private final String content;
+
+		public TextFile(List<String> path, String content) {
+			this.path = path;
+			this.content = content;
+		}
+
+		public String getContent() {
+			return content;
+		}
+
+		public String getFileName() {
+			return path.get(path.size() - 1);
+		}
+
+		public int getSize() {
+			return content.length();
+		}
+
+		@Override
+		public List<String> getSegments() {
+			return path;
+		}
+	}
 
 	public static void main(String[] args) {
 		/*

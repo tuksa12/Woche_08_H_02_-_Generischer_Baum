@@ -8,21 +8,20 @@ import java.util.Iterator;
 public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
     final Comparator<S> comparator;
 
-
     public Tree(Comparator<S> comparator) {
         this.comparator = comparator;
     }
 
-    boolean add(T value){
-        if(value == null){
-            return false;
+//    boolean add(T value){
+//        if(value == null){
+//            return false;
 //        }else if (){
-
-        }else{
-
-        }
-        return true;
-    }
+//
+//        }else{
+//
+//        }
+//        return true;
+//    }
 
     @Override
     public Iterator<T> iterator() {
@@ -39,28 +38,30 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         };
     }
 
-    private abstract class TreeNode {
+    private abstract class TreeNode extends Tree{
         final S segment;
 
         public TreeNode(S segment) {
+            super(new Comparator() {
+                @Override
+                public int compare(Object o1, Object o2) {
+                    return 0;
+                }
+            });
             this.segment = segment;
         }
 
-        public S getsegment() {
+        public S getSegment() {
             return segment;
         }
 
-        private class LeafNode {
-            final S treeNode;
+        private class LeafNode extends TreeNode {
             final T value;
 
-            public LeafNode(S treeNode, T value) {
-                this.treeNode = treeNode;
+            public LeafNode(S segment, T value) {
+                super(segment);
                 this.value = value;
-            }
 
-            public S getTreeNode() {
-                return treeNode;
             }
 
             public T getValue() {
@@ -68,21 +69,31 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             }
         }
 
-        private class InnerNode{
-            S treeNode;
+        private class InnerNode extends TreeNode {
             final ArrayList innerNodeChildren = new ArrayList();
             final ArrayList leafNodeChildren = new ArrayList();
 
-            public InnerNode(S s) {
-                this.treeNode = s;
+            public InnerNode(S segment) {
+                super(segment);
+                innerNodeChildren.add(this);
+                leafNodeChildren.add(LeafNode.class);
             }
 
-            private class RootNode{
-                S segment = null;
+            public ArrayList getInnerNodeChildren() {
+                return innerNodeChildren;
+            }
 
+            public ArrayList getLeafNodeChildren() {
+                return leafNodeChildren;
+            }
+
+            private class RootNode extends InnerNode {
+                public RootNode() {
+                    super(null);
+
+                }
             }
         }
+
     }
-
-
 }

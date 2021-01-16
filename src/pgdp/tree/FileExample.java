@@ -44,7 +44,7 @@ public class FileExample {
 		/*
 		 * TODO: Comment out the code below to try tree creation, insertion and iteration
 		 */
-//		Tree<String, TextFile> fileTree = new Tree<>(String::compareTo);
+		Tree<String, TextFile> fileTree = new Tree<>(String::compareTo);
 //		fileTree.add(new TextFile(List.of("penguins.txt"), "Pinguine sind super!"));
 //		fileTree.add(new TextFile(List.of("archive", "pgdp", "kranzuin.txt"), "Es war ein mal ein Kranzuin..."));
 //		fileTree.add(new TextFile(List.of("archive", "pgdp", "homework", "blatt01.pdf"), "Geben Sie Hello World aus"));
@@ -52,12 +52,12 @@ public class FileExample {
 //		fileTree.add(new TextFile(List.of("archive", "pgdp", "homework", "blatt02.pdf"), "PinguArt und PinguRacing"));
 //		fileTree.add(new TextFile(List.of("archive", "eidi", "vorlesungsfolien.pdf"), "PinguArt und PinguRacing"));
 //		fileTree.add(new TextFile(List.of("woche08h02", "pgdp", "tree", "FileExample.java"), "StackOverflowError"));
-//
-//		for (TextFile textFile : fileTree) {
-//			System.out.print(textFile.getFileName());
-//			System.out.print(": ");
-//			System.out.println(textFile.getContent());
-//		}
+
+		for (TextFile textFile : fileTree) {
+			System.out.print(textFile.getFileName());
+			System.out.print(": ");
+			System.out.println(textFile.getContent());
+		}
 
 		/*
 		 * TODO: Comment out the code below to try tree map

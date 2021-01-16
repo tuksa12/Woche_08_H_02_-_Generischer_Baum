@@ -4,9 +4,13 @@ import javax.swing.text.Segment;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
     final Comparator<S> comparator;
+    final Iterator<T> iterator = iterator();
 
     public Tree(Comparator<S> comparator) {
         this.comparator = comparator;
@@ -23,31 +27,11 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 //        return true;
 //    }
 
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            @Override
-            public boolean hasNext() {
-                return false;
-            }
 
-            @Override
-            public T next() {
-                return null;
-            }
-        };
-    }
-
-    private abstract class TreeNode extends Tree{
+    private abstract class TreeNode<S,T> implements Iterable<T>{
         final S segment;
 
         public TreeNode(S segment) {
-            super(new Comparator() {
-                @Override
-                public int compare(Object o1, Object o2) {
-                    return 0;
-                }
-            });
             this.segment = segment;
         }
 
@@ -55,7 +39,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             return segment;
         }
 
-        private class LeafNode extends TreeNode {
+        private class LeafNode<S,T> extends TreeNode {
             final T value;
 
             public LeafNode(S segment, T value) {
@@ -67,9 +51,15 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             public T getValue() {
                 return value;
             }
+
+            @Override
+            public Iterator iterator() {
+                //iterator.next() = value;
+                return iterator;
+            }
         }
 
-        private class InnerNode extends TreeNode {
+        private class InnerNode<S> extends TreeNode {
             final ArrayList innerNodeChildren = new ArrayList();
             final ArrayList leafNodeChildren = new ArrayList();
 
@@ -87,6 +77,11 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
                 return leafNodeChildren;
             }
 
+            @Override
+            public Iterator iterator() {
+                return innerNodeChildren.iterator();
+            }
+
             private class RootNode extends InnerNode {
                 public RootNode() {
                     super(null);
@@ -96,4 +91,24 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         }
 
     }
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public T next() {
+                return null;
+            }
+        };
+    }
+
+    <R> R map(Function<T, R> leafMapper, BiFunction<S, List<R>, R> innerNodeMapper){
+        return null;
+    }
 }
+

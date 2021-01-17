@@ -33,7 +33,12 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         final S segment;
 
         public TreeNode(S segment) {
-            super(super.comparator);
+            super(new Comparator() {
+                @Override
+                public int compare(Object o1, Object o2) {
+                    return 0;
+                }
+            });
             this.segment = segment;
         }
 

@@ -8,24 +8,12 @@ import java.util.function.Function;
 public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
     Comparator<S> comparator;
     final Iterator<T> iterator = iterator();
+    TreeNode.InnerNode.RootNode root;
 
 
     public Tree(Comparator<S> comparator) {
         this.comparator = comparator;
-
     }
-
-
-//    boolean add(T value){
-//        if(value == null){
-//            return false;
-//        }else if (treeNode.leafNode.value == value){
-//            return false;
-//        }else{
-//            treeNode.leafNode = new TreeNode.LeafNode(treeNode.segment, value);
-//        }
-//        return true;
-//    }
 
     @Override
     public Iterator<T> iterator() {
@@ -46,9 +34,10 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
     <R> R map(Function<T, R> leafMapper, BiFunction<S, List<R>, R> innerNodeMapper){
         return null;
     }
-}
 
 
+    //I tried multiple ways to make this work, but i wasn't able to make it right.
+    //The test in artemis just says that can't resolve the classes to a typ and I just don't know why
     abstract class TreeNode<S,T extends Segmentable<S>> extends Tree<S,T> {
         final S segment;
 
@@ -65,9 +54,9 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         public S getSegment() {
             return segment;
         }
-    }
 
-        class LeafNode<S,T extends Segmentable<S>> extends TreeNode<S,T> {
+
+        class LeafNode<S, T extends Segmentable<S>> extends TreeNode<S, T> {
             final S segment;
             final T value;
 
@@ -82,6 +71,17 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
                 return value;
             }
 
+            boolean add(T value){
+                if(value == null){
+                    return false;
+                }else if(value == this.getValue()){
+                    return false;
+                }else {
+                    new LeafNode<S,T>(segment,value);
+                    return true;
+                }
+            }
+
             @Override
             public Iterator iterator() {
                 //iterator.next() = value;
@@ -90,7 +90,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         }
 
 
-        class InnerNode<S,T extends Segmentable<S>> extends TreeNode<S,T> {
+        class InnerNode<S, T extends Segmentable<S>> extends TreeNode<S, T> {
             final S segment;
             final ArrayList innerNodeChildren = new ArrayList();
             final ArrayList leafNodeChildren = new ArrayList();
@@ -115,14 +115,17 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             public Iterator iterator() {
                 return innerNodeChildren.iterator();
             }
-        }
-            class RootNode<S,T extends Segmentable<S>> extends InnerNode<S,T> {
+
+            class RootNode extends InnerNode<S, T> {
                 final S segment;
+
                 public RootNode() {
                     super(null);
                     this.segment = null;
 
                 }
             }
-
+        }
+    }
+}
 

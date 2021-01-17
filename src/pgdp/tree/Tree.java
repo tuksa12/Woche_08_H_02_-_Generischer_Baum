@@ -9,12 +9,13 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
-    final Comparator<S> comparator;
+    Comparator<S> comparator;
     final Iterator<T> iterator = iterator();
 
     public Tree(Comparator<S> comparator) {
         this.comparator = comparator;
     }
+
 
 //    boolean add(T value){
 //        if(value == null){
@@ -28,10 +29,11 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 //    }
 
 
-    private abstract class TreeNode<S,T> implements Iterable<T>{
+    private abstract class TreeNode<S,T> extends Tree {
         final S segment;
 
         public TreeNode(S segment) {
+            super(super.comparator);
             this.segment = segment;
         }
 

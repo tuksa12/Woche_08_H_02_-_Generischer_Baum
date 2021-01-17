@@ -27,8 +27,29 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 //        return true;
 //    }
 
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
 
-    private abstract class TreeNode extends Tree<S,T> {
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public T next() {
+                return null;
+            }
+        };
+    }
+
+    <R> R map(Function<T, R> leafMapper, BiFunction<S, List<R>, R> innerNodeMapper){
+        return null;
+    }
+}
+
+
+    abstract class TreeNode<S,T> extends Tree {
         final S segment;
 
         public TreeNode(S segment) {
@@ -44,8 +65,9 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         public S getSegment() {
             return segment;
         }
+    }
 
-        private  class LeafNode extends TreeNode {
+        class LeafNode<S,T> extends TreeNode {
             final S segment;
             final T value;
 
@@ -67,7 +89,8 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             }
         }
 
-        private class InnerNode extends TreeNode {
+
+        class InnerNode<S,T> extends TreeNode {
             final S segment;
             final ArrayList innerNodeChildren = new ArrayList();
             final ArrayList leafNodeChildren = new ArrayList();
@@ -92,8 +115,8 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             public Iterator iterator() {
                 return innerNodeChildren.iterator();
             }
-
-            private  class RootNode extends InnerNode {
+        }
+            class RootNode<S,T> extends InnerNode {
                 final S segment;
                 public RootNode() {
                     super(null);
@@ -101,27 +124,5 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 
                 }
             }
-        }
 
-    }
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-
-            @Override
-            public boolean hasNext() {
-                return false;
-            }
-
-            @Override
-            public T next() {
-                return null;
-            }
-        };
-    }
-
-    <R> R map(Function<T, R> leafMapper, BiFunction<S, List<R>, R> innerNodeMapper){
-        return null;
-    }
-}
 

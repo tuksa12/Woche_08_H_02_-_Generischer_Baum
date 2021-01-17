@@ -9,6 +9,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
     Comparator<S> comparator;
     final Iterator<T> iterator = iterator();
 
+
     public Tree(Comparator<S> comparator) {
         this.comparator = comparator;
 
@@ -27,7 +28,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 //    }
 
 
-    private abstract class TreeNode extends Tree {
+    private abstract class TreeNode extends Tree<S,T> {
         final S segment;
 
         public TreeNode(S segment) {
@@ -92,7 +93,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
                 return innerNodeChildren.iterator();
             }
 
-            private class RootNode extends InnerNode {
+            private  class RootNode extends InnerNode {
                 final S segment;
                 public RootNode() {
                     super(null);

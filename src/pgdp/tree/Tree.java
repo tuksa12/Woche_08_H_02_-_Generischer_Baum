@@ -49,7 +49,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 }
 
 
-    abstract class TreeNode<S,T> extends Tree {
+    abstract class TreeNode<S,T extends Segmentable<S>> extends Tree<S,T> {
         final S segment;
 
         public TreeNode(S segment) {
@@ -67,7 +67,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         }
     }
 
-        class LeafNode<S,T> extends TreeNode {
+        class LeafNode<S,T extends Segmentable<S>> extends TreeNode<S,T> {
             final S segment;
             final T value;
 
@@ -90,7 +90,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
         }
 
 
-        class InnerNode<S,T> extends TreeNode {
+        class InnerNode<S,T extends Segmentable<S>> extends TreeNode<S,T> {
             final S segment;
             final ArrayList innerNodeChildren = new ArrayList();
             final ArrayList leafNodeChildren = new ArrayList();
@@ -116,7 +116,7 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
                 return innerNodeChildren.iterator();
             }
         }
-            class RootNode<S,T> extends InnerNode {
+            class RootNode<S,T extends Segmentable<S>> extends InnerNode<S,T> {
                 final S segment;
                 public RootNode() {
                     super(null);

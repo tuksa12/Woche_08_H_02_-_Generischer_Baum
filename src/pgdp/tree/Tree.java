@@ -1,10 +1,7 @@
 package pgdp.tree;
 
 import javax.swing.text.Segment;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -14,22 +11,23 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
 
     public Tree(Comparator<S> comparator) {
         this.comparator = comparator;
+
     }
 
 
 //    boolean add(T value){
 //        if(value == null){
 //            return false;
-//        }else if (){
-//
+//        }else if (treeNode.leafNode.value == value){
+//            return false;
 //        }else{
-//
+//            treeNode.leafNode = new TreeNode.LeafNode(treeNode.segment, value);
 //        }
 //        return true;
 //    }
 
 
-    private abstract class TreeNode<S,T> extends Tree {
+    private abstract class TreeNode extends Tree {
         final S segment;
 
         public TreeNode(S segment) {
@@ -46,11 +44,13 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             return segment;
         }
 
-        private class LeafNode<S,T> extends TreeNode {
+        private  class LeafNode extends TreeNode {
+            final S segment;
             final T value;
 
             public LeafNode(S segment, T value) {
                 super(segment);
+                this.segment = (S) super.getSegment();
                 this.value = value;
 
             }
@@ -66,12 +66,15 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             }
         }
 
-        private class InnerNode<S> extends TreeNode {
+        private class InnerNode extends TreeNode {
+            final S segment;
             final ArrayList innerNodeChildren = new ArrayList();
             final ArrayList leafNodeChildren = new ArrayList();
 
+
             public InnerNode(S segment) {
                 super(segment);
+                this.segment = (S) super.getSegment();
                 innerNodeChildren.add(this);
                 leafNodeChildren.add(LeafNode.class);
             }
@@ -90,8 +93,10 @@ public class Tree<S, T extends Segmentable<S>> implements Iterable<T> {
             }
 
             private class RootNode extends InnerNode {
+                final S segment;
                 public RootNode() {
                     super(null);
+                    this.segment = null;
 
                 }
             }
